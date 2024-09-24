@@ -11,8 +11,8 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Long> {
 
     Optional<ArticleEntity> findByIdAndDeleteDateIsNull(Long id);
 
-    Page<ArticleEntity> findByDeleteDateIsNull(Pageable pageable);
+    Page<ArticleEntity> findByDeleteDateIsNullOrderByIdDesc(Pageable pageable);
 
-    Page<ArticleEntity> findByTitleContainingOrContentContainingAndDeleteDateIsNull(String title, String content, Pageable pageable);
+    Page<ArticleEntity> findByTitleContainingOrContentContainingAndDeleteDateIsNullOrderByIdDesc(String title, String content, Pageable pageable);
 
 }

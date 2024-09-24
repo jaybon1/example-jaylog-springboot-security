@@ -38,6 +38,7 @@ public class MyServiceApiV1 {
                 .stream()
                 .filter(likeEntity -> likeEntity.getArticleEntity().getDeleteDate() == null)
                 .map(likeEntity -> likeEntity.getArticleEntity())
+                .sorted((a1, a2) -> a2.getId().compareTo(a1.getId()))
                 .toList();
         return new ResponseEntity<>(
                 ResDTO.<ResMyGetDTOApiV1>builder()

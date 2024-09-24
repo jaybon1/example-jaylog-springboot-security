@@ -39,9 +39,9 @@ public class MainServiceApiV1 {
         }
         Page<ArticleEntity> articleEntityPage;
         if (searchValue == null || searchValue.isEmpty()) {
-            articleEntityPage = articleRepository.findByDeleteDateIsNull(pageable);
+            articleEntityPage = articleRepository.findByDeleteDateIsNullOrderByIdDesc(pageable);
         } else {
-            articleEntityPage = articleRepository.findByTitleContainingOrContentContainingAndDeleteDateIsNull(searchValue, searchValue, pageable);
+            articleEntityPage = articleRepository.findByTitleContainingOrContentContainingAndDeleteDateIsNullOrderByIdDesc(searchValue, searchValue, pageable);
         }
         ResMainGetDTOApiV1 resMainGetDTOApiV1;
         if (userEntity != null) {

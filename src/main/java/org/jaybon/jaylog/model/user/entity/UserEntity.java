@@ -1,6 +1,7 @@
 package org.jaybon.jaylog.model.user.entity;
 
 import jakarta.persistence.*;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import lombok.*;
 import org.hibernate.annotations.*;
@@ -63,6 +64,7 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
     @SQLRestriction("delete_date is null")
+    @OrderBy("id desc")
     private List<ArticleEntity> articleEntityList;
 
     @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
