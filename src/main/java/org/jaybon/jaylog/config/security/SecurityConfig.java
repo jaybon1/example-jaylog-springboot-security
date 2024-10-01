@@ -59,6 +59,7 @@ public class SecurityConfig {
                     "http://127.0.0.1:5500",
                     "http://127.0.0.1:5501",
                     "http://127.0.0.1:5502",
+                    "http://127.0.0.1:8080",
                     "http://10.0.2.2",
                     "http://localhost",
                     "http://localhost:80",
@@ -71,8 +72,7 @@ public class SecurityConfig {
                     "http://localhost:5500",
                     "http://localhost:5501",
                     "http://localhost:5502",
-                    "http://localhost:14491",
-                    "http://localhost:14492"
+                    "http://localhost:8080"
             ));
             config.setAllowCredentials(true);
             return config;
