@@ -59,6 +59,8 @@ public class SecurityConfig {
                     "http://127.0.0.1:5500",
                     "http://127.0.0.1:5501",
                     "http://127.0.0.1:5502",
+                    "http://10.0.2.2",
+                    "http://localhost",
                     "http://localhost:80",
                     "http://localhost:3000",
                     "http://localhost:3001",
