@@ -72,7 +72,7 @@ postman {
 
 openapi3 {
 	servers = [ {url = 'https://jaylogapi.jaybon.org'}, {url = 'http://localhost' } ]
-	title = 'TODO API'
+	title = 'JAYLOG API'
 	description = ''
 	version = '1.0.0'
 	format = 'json'
