@@ -45,34 +45,10 @@ public class SecurityConfig {
             config.setAllowedMethods(Collections.singletonList("*"));
             config.setAllowedOriginPatterns(List.of(
                     "https://jaylogapi.jaybon.org",
-                    "https://jaylogapi.jaybon.org:443",
                     "http://43.203.227.240",
-                    "http://43.203.227.240:80",
-                    "http://127.0.0.1",
-                    "http://127.0.0.1:80",
-                    "http://127.0.0.1:3000",
-                    "http://127.0.0.1:3001",
-                    "http://127.0.0.1:3002",
-                    "http://127.0.0.1:5173",
-                    "http://127.0.0.1:5174",
-                    "http://127.0.0.1:5175",
-                    "http://127.0.0.1:5500",
-                    "http://127.0.0.1:5501",
-                    "http://127.0.0.1:5502",
-                    "http://127.0.0.1:8080",
-                    "http://10.0.2.2",
                     "http://localhost",
-                    "http://localhost:80",
-                    "http://localhost:3000",
-                    "http://localhost:3001",
-                    "http://localhost:3002",
-                    "http://localhost:5173",
-                    "http://localhost:5174",
-                    "http://localhost:5175",
-                    "http://localhost:5500",
-                    "http://localhost:5501",
-                    "http://localhost:5502",
-                    "http://localhost:8080"
+                    "http://127.0.0.1",
+                    "http://10.0.2.0/24"
             ));
             config.setAllowCredentials(true);
             return config;
