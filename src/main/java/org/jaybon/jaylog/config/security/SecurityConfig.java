@@ -44,11 +44,11 @@ public class SecurityConfig {
             config.setAllowedHeaders(Collections.singletonList("*"));
             config.setAllowedMethods(Collections.singletonList("*"));
             config.setAllowedOriginPatterns(List.of(
-                    "https://jaylogapi.jaybon.org",
-                    "http://43.203.227.240",
-                    "http://localhost",
-                    "http://127.0.0.1",
-                    "http://10.0.2.0/24"
+                    "https://jaylogapi.jaybon.org:[*]",
+                    "http://43.203.227.240:[*]",
+                    "http://127.0.0.1:[*]",
+                    "http://localhost:[*]",
+                    "http://10.0.2.*:[*]"
             ));
             config.setAllowCredentials(true);
             return config;
