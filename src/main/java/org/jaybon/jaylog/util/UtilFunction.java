@@ -26,6 +26,9 @@ public class UtilFunction {
         if (multipartFile.isEmpty()) {
             return null;
         }
+        if (Objects.requireNonNull(multipartFile.getOriginalFilename()).contains(" ")) {
+            throw new BadRequestException("파일 이름에 공백이 포함되어 있습니다.");
+        }
         if (!isValidImageExtension(multipartFile.getOriginalFilename())) {
             throw new BadRequestException("jpeg, jpg, png, gif 파일만 업로드 가능합니다.");
         }
