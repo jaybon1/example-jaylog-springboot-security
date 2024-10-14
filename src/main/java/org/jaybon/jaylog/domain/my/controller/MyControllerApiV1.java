@@ -34,7 +34,7 @@ public class MyControllerApiV1 {
 
     @PutMapping("/info")
     public ResponseEntity<ResDTO<Object>> putBy(
-            ReqMyPutInfoDTOApiV1 dto,
+            ReqMyPutInfoDTOApiV1 dto, // form-data로 받을 때는 @ModelAttribute 또는 어노테이션 없이 받아야함
             @NotNull @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
         return myServiceApiV1.putBy(
