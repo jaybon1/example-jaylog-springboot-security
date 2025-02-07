@@ -34,7 +34,7 @@ public class ArticleServiceApiV1 {
     private final ArticleRepository articleRepository;
     private final LikeRepository likeRepository;
 
-    public ResponseEntity<ResDTO<ResArticleGetByIdDTOApiV1>> getByIdAndCustomUserDetails(Long id, CustomUserDetails customUserDetails) {
+    public ResArticleGetByIdDTOApiV1 getByIdAndCustomUserDetails(Long id, CustomUserDetails customUserDetails) {
         ArticleEntity articleEntity = UtilFunction.getArticleEntityBy(articleRepository, id);
         ResArticleGetByIdDTOApiV1 resArticleGetByIdDTOApiV1;
         if (customUserDetails != null) {
@@ -43,36 +43,22 @@ public class ArticleServiceApiV1 {
         } else {
             resArticleGetByIdDTOApiV1 = ResArticleGetByIdDTOApiV1.of(articleEntity);
         }
-        return new ResponseEntity<>(
-                ResDTO.<ResArticleGetByIdDTOApiV1>builder()
-                        .code(Constants.ResCode.OK)
-                        .message("게시글 조회에 성공했습니다.")
-                        .data(resArticleGetByIdDTOApiV1)
-                        .build(),
-                HttpStatus.OK
-        );
+        return resArticleGetByIdDTOApiV1;
     }
 
     @Transactional
-    public ResponseEntity<ResDTO<ResArticlePostDTOApiV1>> postBy(
+    public ResArticlePostDTOApiV1 postBy(
             ReqArticlePostDTOApiV1 dto,
             CustomUserDetails customUserDetails
     ) {
         System.out.println("dto = " + dto);
         UserEntity userEntity = UtilFunction.getUserEntityBy(userRepository, customUserDetails);
         ArticleEntity articleEntity = articleRepository.save(dto.getArticle().toEntityWith(userEntity));
-        return new ResponseEntity<>(
-                ResDTO.<ResArticlePostDTOApiV1>builder()
-                        .code(Constants.ResCode.OK)
-                        .message("게시글 저장에 성공했습니다.")
-                        .data(ResArticlePostDTOApiV1.of(articleEntity))
-                        .build(),
-                HttpStatus.OK
-        );
+        return ResArticlePostDTOApiV1.of(articleEntity);
     }
 
     @Transactional
-    public ResponseEntity<ResDTO<Object>> putBy(
+    public void putBy(
             Long id,
             ReqArticlePutDTOApiV1 dto,
             CustomUserDetails customUserDetails
@@ -83,17 +69,10 @@ public class ArticleServiceApiV1 {
             throw new BadRequestException("게시글 작성자만 수정할 수 있습니다.");
         }
         dto.getArticle().update(articleEntity);
-        return new ResponseEntity<>(
-                ResDTO.builder()
-                        .code(Constants.ResCode.OK)
-                        .message("게시글 수정에 성공했습니다.")
-                        .build(),
-                HttpStatus.OK
-        );
     }
 
     @Transactional
-    public ResponseEntity<ResDTO<Object>> deleteByIdAndCustomUserDetails(
+    public void deleteByIdAndCustomUserDetails(
             Long id,
             CustomUserDetails customUserDetails
     ) {
@@ -103,18 +82,11 @@ public class ArticleServiceApiV1 {
             throw new BadRequestException("게시글 작성자만 삭제할 수 있습니다.");
         }
         articleEntity.setDeleteDate(LocalDateTime.now());
-        return new ResponseEntity<>(
-                ResDTO.builder()
-                        .code(Constants.ResCode.OK)
-                        .message("게시글 삭제에 성공했습니다.")
-                        .build(),
-                HttpStatus.OK
-        );
     }
 
 
     @Transactional
-    public ResponseEntity<ResDTO<ResArticlePostLikeByIdDTOApiV1>> postLikeByIdAndCustomUserDetails(
+    public ResArticlePostLikeByIdDTOApiV1 postLikeByIdAndCustomUserDetails(
             Long id,
             CustomUserDetails customUserDetails
     ) {
@@ -131,13 +103,6 @@ public class ArticleServiceApiV1 {
             likeRepository.save(likeEntityForSaving);
         }
         long likeCount = likeRepository.countByArticleEntity_Id(articleEntity.getId());
-        return new ResponseEntity<>(
-                ResDTO.<ResArticlePostLikeByIdDTOApiV1>builder()
-                        .code(Constants.ResCode.OK)
-                        .message("게시글 좋아요 변경에 성공했습니다.")
-                        .data(ResArticlePostLikeByIdDTOApiV1.of(likeCount, !isLikeClicked))
-                        .build(),
-                HttpStatus.OK
-        );
+        return ResArticlePostLikeByIdDTOApiV1.of(likeCount, !isLikeClicked);
     }
 }

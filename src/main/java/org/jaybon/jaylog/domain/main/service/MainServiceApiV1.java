@@ -26,7 +26,7 @@ public class MainServiceApiV1 {
     private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
 
-    public ResponseEntity<ResDTO<ResMainGetDTOApiV1>> getBy(
+    public ResMainGetDTOApiV1 getBy(
             String searchValue,
             Pageable pageable,
             CustomUserDetails customUserDetails
@@ -49,13 +49,6 @@ public class MainServiceApiV1 {
         } else {
             resMainGetDTOApiV1 = ResMainGetDTOApiV1.of(articleEntityPage);
         }
-        return new ResponseEntity<>(
-                ResDTO.<ResMainGetDTOApiV1>builder()
-                        .code(Constants.ResCode.OK)
-                        .message("메인 조회에 성공했습니다.")
-                        .data(resMainGetDTOApiV1)
-                        .build(),
-                HttpStatus.OK
-        );
+        return resMainGetDTOApiV1;
     }
 }

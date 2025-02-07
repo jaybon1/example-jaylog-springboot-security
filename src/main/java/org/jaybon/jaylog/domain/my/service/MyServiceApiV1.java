@@ -30,37 +30,23 @@ public class MyServiceApiV1 {
     private final LikeRepository likeRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public ResponseEntity<ResDTO<ResMyGetDTOApiV1>> getBy(CustomUserDetails customUserDetails) {
+    public ResMyGetDTOApiV1 getBy(CustomUserDetails customUserDetails) {
         UserEntity userEntity = UtilFunction.getUserEntityBy(userRepository, customUserDetails);
         List<ArticleEntity> myArticleEntityList = userEntity.getArticleEntityList();
         List<LikeEntity> myLikeEntityList = likeRepository.findByUserEntity_Id(userEntity.getId());
         List<ArticleEntity> likeArticleEntityList = myLikeEntityList
                 .stream()
-                .filter(likeEntity -> likeEntity.getArticleEntity().getDeleteDate() == null)
-                .map(likeEntity -> likeEntity.getArticleEntity())
-                .sorted((a1, a2) -> a2.getId().compareTo(a1.getId()))
+                .filter(thisLikeEntity -> thisLikeEntity.getArticleEntity().getDeleteDate() == null)
+                .map(thisLikeEntity -> thisLikeEntity.getArticleEntity())
+                .sorted((thisArticleEntity1, thisArticleEntity2) -> thisArticleEntity2.getId().compareTo(thisArticleEntity1.getId()))
                 .toList();
-        return new ResponseEntity<>(
-                ResDTO.<ResMyGetDTOApiV1>builder()
-                        .code(Constants.ResCode.OK)
-                        .message("마이페이지 조회에 성공했습니다.")
-                        .data(ResMyGetDTOApiV1.of(userEntity, myArticleEntityList, likeArticleEntityList))
-                        .build(),
-                HttpStatus.OK
-        );
+        return ResMyGetDTOApiV1.of(userEntity, myArticleEntityList, likeArticleEntityList);
     }
 
     @Transactional
-    public ResponseEntity<ResDTO<Object>> putBy(ReqMyPutInfoDTOApiV1 dto, CustomUserDetails customUserDetails) {
+    public void putBy(ReqMyPutInfoDTOApiV1 dto, CustomUserDetails customUserDetails) {
         UserEntity userEntity = UtilFunction.getUserEntityBy(userRepository, customUserDetails);
         dto.updateWith(passwordEncoder, userEntity);
-        return new ResponseEntity<>(
-                ResDTO.builder()
-                        .code(Constants.ResCode.OK)
-                        .message("회원 정보 수정에 성공했습니다.")
-                        .build(),
-                HttpStatus.OK
-        );
     }
 
 }

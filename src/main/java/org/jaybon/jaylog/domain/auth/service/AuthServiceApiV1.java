@@ -43,7 +43,7 @@ public class AuthServiceApiV1 {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public ResponseEntity<ResDTO<Object>> joinBy(ReqAuthPostJoinDTOApiV1 dto) {
+    public void joinBy(ReqAuthPostJoinDTOApiV1 dto) {
         Optional<UserEntity> userEntityOptional = userRepository.findByUsername(dto.getUser().getUsername());
         if (userEntityOptional.isPresent()) {
             throw new BadRequestException("이미 존재하는 아이디입니다.");
@@ -66,17 +66,10 @@ public class AuthServiceApiV1 {
                 .build();
         userRepository.save(userEntityForSaving);
         userRoleRepository.save(userRoleEntityForSaving);
-        return new ResponseEntity<>(
-                ResDTO.builder()
-                        .code(0)
-                        .message("회원가입에 성공하였습니다.")
-                        .build(),
-                HttpStatus.OK
-        );
     }
 
     @Transactional
-    public ResponseEntity<ResDTO<ResAuthPostLoginDTOApiV1>> loginBy(ReqAuthPostLoginDTOApiV1 dto) {
+    public ResAuthPostLoginDTOApiV1 loginBy(ReqAuthPostLoginDTOApiV1 dto) {
         Optional<UserEntity> userEntityOptional = userRepository.findByUsernameAndDeleteDateIsNull(dto.getUser().getUsername());
         if (userEntityOptional.isEmpty()) {
             throw new BadRequestException("아이디를 정확히 입력해주세요.");
@@ -88,17 +81,10 @@ public class AuthServiceApiV1 {
         CustomUserDetails customUserDetails = CustomUserDetails.of(userEntityOptional.get());
         String accessJwt = UtilFunction.generateAccessJwtBy(customUserDetails);
         String refreshJwt = UtilFunction.generateRefreshJwtBy(customUserDetails);
-        return new ResponseEntity<>(
-                ResDTO.<ResAuthPostLoginDTOApiV1>builder()
-                        .code(0)
-                        .message("로그인에 성공하였습니다.")
-                        .data(ResAuthPostLoginDTOApiV1.of(accessJwt, refreshJwt))
-                        .build(),
-                HttpStatus.OK
-        );
+        return ResAuthPostLoginDTOApiV1.of(accessJwt, refreshJwt);
     }
 
-    public ResponseEntity<ResDTO<ResAuthPostRefreshDTOApiV1>> refreshBy(ReqAuthPostRefreshDTOApiV1 dto) {
+    public ResAuthPostRefreshDTOApiV1 refreshBy(ReqAuthPostRefreshDTOApiV1 dto) {
         DecodedJWT decodedRefreshJWT;
         try {
             decodedRefreshJWT = JWT.require(Algorithm.HMAC512(Constants.Jwt.SECRET))
@@ -121,14 +107,7 @@ public class AuthServiceApiV1 {
         CustomUserDetails customUserDetails = CustomUserDetails.of(userEntityOptional.get());
         String accessJwt = UtilFunction.generateAccessJwtBy(customUserDetails);
         String refreshJwt = UtilFunction.generateRefreshJwtBy(customUserDetails);
-        return new ResponseEntity<>(
-                ResDTO.<ResAuthPostRefreshDTOApiV1>builder()
-                        .code(0)
-                        .message("토큰 재발급에 성공하였습니다.")
-                        .data(ResAuthPostRefreshDTOApiV1.of(accessJwt, refreshJwt))
-                        .build(),
-                HttpStatus.OK
-        );
+        return ResAuthPostRefreshDTOApiV1.of(accessJwt, refreshJwt);
     }
 
 }
